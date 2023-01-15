@@ -1,0 +1,414 @@
+<html>
+	<head>
+		<title>KULTUM RS UMMI</title>
+
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+		<link rel="stylesheet" type="text/css" href="css/uikit.min.css">
+		<link rel="stylesheet" type="text/css" href="css/font-awesome.min.css">
+		
+		<script type="text/javascript" src="js/uikit.min.js"></script>
+		<script type="text/javascript" src="js/uikit-icons.min.js"></script>
+		<script type="text/javascript" src="js/jquery.slim.min.js"></script>
+		
+		<style>
+			html { font-size: 62.5%; }
+			body { font-size: 1em;}
+
+			div {
+				font-family: Futura-Bold;
+				/*font-size:48px;*/
+				padding:5px;
+				text-align:center;
+				color: white;
+			}
+
+			.button {
+				background-color: #4CAF50;
+				border: none;
+				color: white;
+				padding: 15px 32px;
+				text-align: center;
+				text-decoration: none;
+				display: inline-block;
+				font-size: 150%;
+			}
+
+			.buttonRegu {
+				background-color: #053C82;
+				padding: 10px 10px 10px 10px;
+				border: 1px;
+				color: white;
+				text-align: center;
+				text-decoration: none;
+				display: inline-block;
+				font-size: 16px;				
+			}
+
+			.buttonMin {
+				background-color: #FF0000;
+				border	: 1px;
+				color	: white;
+				padding	: 10px 10px 10px 10px;
+				text-align: center;
+				font-size: 14px;
+			}
+			
+			.pilihan {
+				background-color: #FF0000;
+				border	: 1px;
+				color	: white;
+				padding	: 10px 10px 10px 10px;
+				text-align: center;
+				font-size: 20px;
+			}
+			
+			table {
+			  width: 95%;
+			}
+
+			td {
+				//background-color: #E3E7F6;
+				text-align: center;
+			}
+
+			h1 {
+			  background-color: #0539FB	;
+			  color: white;
+			  text-align: center;
+			  font-size:50px;
+			}
+			
+			button {
+			  background-color: #0539FB	;
+			  color: white;
+			  text-align: center;
+			  font-size:30px;
+			}
+
+			.nilai {
+				font-size:120px;
+				text-align: center;
+				color: white;
+			}
+
+			.judul {
+				font-size:50px;
+				text-align: center;
+				vertical-align: center;
+			}	
+			
+			.peserta {
+				border: 1px;
+				color: white;								
+				font-size:20px;
+				text-align: center;
+				vertical-align: center;
+				background-color: #053C82;
+				padding: 5px 10px 5px 10px;				
+			}	
+			</style>
+		</head>
+		<body style="background: #54A0FF; color: #ffffff;">
+			<div class="uk-container-expand uk-height-viewport">
+				<div class="uk-grid uk-grid-small">
+					<div class="uk-width-expand"><center>
+						<span id="title" style="font-size: 60pt;">
+							LOMBA KULTUM RS UMMI
+							<hr class="uk-divider-icon" style="max-width: 50%">
+						</span>
+					</div>
+				</div>
+				
+				<table>
+					<tr>
+						<td width = "40%">
+							<img id="foto" src="images/guest.png" alt="Foto Peserta" width=200 height=300>
+						</td>
+						<td>
+							<center><h1 id="nameTeam1">NAMA PESERTA</h1></center>
+							<center>
+								<span id="minuteLeft" class ="nilai">00</span>
+								<span id="titikdua" class ="nilai">:</span>
+								<span id="secondLeft" class ="nilai">00</span>
+								<span id="timeUp" style="display: none; font-size: 60pt;">Waktu Habis</span>
+							</center>
+							<center>
+								<br>
+								<button id="randomImage">ACAK</button>
+								<button id="stoprandomImage" style="display: none;">&nbspSTOP&nbsp</button>
+								<button id="startTime">START</button>
+								<button id="resetTime" style="display: none;">RESET</button>
+								<button id="stopTime" style="display: none;">&nbspSTOP&nbsp</button>
+							</center>
+						</td>
+					</tr>
+				</table>
+				<center>
+					<br><br><br><br><div class="peserta" id="peserta"></div>					
+					<br><div class="pesertanya" id="pesertanya"></div>					
+				</center>
+			<br>
+		
+		
+	</div>
+	
+	<script type="text/javascript">
+		var x;
+		var i,j;
+		var out;
+		var left;
+		var awal;
+		var akhir;
+		var imageRandom;
+		var src_image;
+		var name_image;
+		var images = ["NONE","AGUS","AMALIA","ANGGA","EGI","HINDAYANI","HOPID","IIP","NIDA","SYAEFUL","VERONIKA"];
+		var images_terpilih = [];
+		
+		const music1 	= new Audio('sound/bell.mp3');
+		const music2 	= new Audio('sound/warning.mp3');
+		const music3 	= new Audio('sound/10 detik.mp3');
+		const music4 	= new Audio('sound/ovation 1.mp3');
+		
+		$( document ).ready(function() {
+			arrayLen = images.length;
+			var tmpPeserta = '';
+			for (i = 1; i < arrayLen; i++) {
+			  tmpPeserta += '<input name="pilih" type="checkbox" name="pilih" value="'+images[i]+'" checked>'+images[i]+'&nbsp;&nbsp;&nbsp;&nbsp;</input>';
+			}
+			$('#peserta').html(tmpPeserta);
+			images_terpilih = images;
+		});
+
+		$('#nameTeam1').on('click', function() {
+	    	var name = prompt("Masukkan Kontestan Kultum");
+	    	console.log(name);
+	    	if (name !== null && name.trim() !== "") {
+				src_image = 'images/' + name + '.png';
+				document.getElementById("foto").src = src_image;
+	    	}
+		});
+		
+		function acakGambar(){
+			arrayLen	= images_terpilih.length ;			
+			awal 		= setInterval(function(){ 
+				
+				out = setTimeout(function(){
+					console.log("set");
+				}, 1000);
+				
+				imageRandom = Math.floor(Math.random()*arrayLen);
+				imageRandom++;
+				src_image 	= 'images/' + images_terpilih[imageRandom-1] + '.png';
+				name_image 	= images_terpilih[imageRandom-1];
+				$('#nameTeam1').html(name_image);
+				document.getElementById("foto").src = src_image;
+				
+				if (left < 0) {
+					clearInterval(x);
+			    }
+			}, 100);			
+		}
+
+		function timerStart(){
+
+			var setingmenit = 7;
+			var setingdetik = 0;
+			
+			if ((( setingmenit ||  setingdetik) && ($.isNumeric(setingmenit) || $.isNumeric(setingdetik)))) {
+
+				$('#startTime').hide();
+				$('#resetTime').show();
+				$('#stopTime').show();
+
+				if(setingmenit){
+					var minutes = setingmenit * 1000 * 60;
+					console.log(minutes);
+				}else{
+					var minutes = 0;
+				}
+
+				if(setingdetik){
+					var seconds = $('#giveSecond').val() * 1000;
+					console.log(seconds);
+				}else{
+					var seconds = 0;
+				}
+
+				out = setTimeout(function(){
+					$('#timeUp').show();
+					
+					$('#minuteLeft').hide();
+					$('#titikdua').hide();
+					$('#secondLeft').hide();
+					$('#timeUp').show();
+					$('#randomImage').show();
+					
+					hore();
+					
+					$('#resetTime').hide();
+					$('#stopTime').hide();
+					$('#startTime').show();
+
+					console.log("set");
+				}, minutes+seconds);
+
+				var countDown = new Date().getTime()+minutes+seconds;
+				x = setInterval(function() {
+					
+					left = countDown - new Date().getTime();
+
+					var minutes_remaining = Math.floor((left % (1000 * 60 * 60)) / (1000 * 60));
+    				var seconds_remaining = Math.floor((left % (1000 * 60)) / 1000);
+					
+    				if (minutes_remaining>=10 && minutes_remaining>0){
+    					$('#minuteLeft').html(minutes_remaining);
+    				}
+    				else if(minutes_remaining>=0){
+    					$('#minuteLeft').html("0"+minutes_remaining);
+    				}
+
+    				if (seconds_remaining>=10 && seconds_remaining>0){
+    					$('#secondLeft').html(seconds_remaining);
+    				}
+    				else if(seconds_remaining>=0){
+    					$('#secondLeft').html("0"+seconds_remaining);
+					} 
+					
+					if (minutes_remaining === 1 && seconds_remaining === 0 ) {
+    					pengingatmenit();
+    				}
+					
+					if(minutes_remaining === 0 && seconds_remaining === 10){
+    					pengingatdetik();
+    				}
+					
+					if (left < 0) {
+			        	clearInterval(x);
+			    	}
+				}, 100);
+
+			}
+		}
+
+		function pengingatmenit(){
+			music2.play();
+    	}
+		
+		function pengingatdetik(){
+			music3.play();
+    	}
+		
+		function hore(){
+			music4.play();
+    	}
+		
+		function timerStop(){
+			clearTimeout(out);
+			clearInterval(x);
+					
+			$('#timeUp').hide();
+			$('#secondLeft').show();
+			console.log("zero");
+			music3.currentTime = 0;
+		}		
+
+		$('#showTimer').on('click', function() {
+			$('#showTimer').hide();
+
+			if('#timeUp:visible'){
+				timerStop();
+			}
+
+			$('#timer').show();
+			$('#hideTimer').show();
+			$('#startTime').show();
+			$('#resetTime').show();
+			$('#stopTime').show();
+
+		});
+
+		$('#hideTimer').on('click', function() {
+			$('#showTimer').show();
+
+			$('#timer').hide();
+			$('#hideTimer').hide();
+			$('#startTime').hide();
+			$('#resetTime').show();
+			$('#stopTime').show();
+		});
+
+		$('#startTime').on('click', function() {
+			timerStop();
+			timerStart();
+			music1.play();
+			$('#randomImage').hide();
+			$('#minuteLeft').show();
+			$('#titikdua').show();
+			$('#secondLeft').show();
+		});
+
+		
+		$('#resetTime').on('click', function() {
+			timerStop();
+			$('#resetTime').hide();
+			$('#stopTime').hide();
+			$('#startTime').show();
+			$('#randomImage').show();
+			music1.pause();
+			music1.currentTime = 0;
+			music2.pause();
+			music2.currentTime = 0;
+			music3.pause();
+			music3.currentTime = 0;
+		});
+		
+		$('#stopTime').on('click', function() {
+			timerStop();
+			$('#resetTime').hide();
+			$('#stopTime').hide();
+			$('#startTime').show();
+			$('#randomImage').show();
+			music1.pause();
+			music1.currentTime = 0;
+			music2.pause();
+			music2.currentTime = 0;
+			music3.pause();
+			music3.currentTime = 0;
+			music4.play();
+		});
+		
+		$('#randomImage').on('click', function() {
+			$('#randomImage').hide();
+			$('#startTime').hide();
+			$('#stoprandomImage').show();
+			acakGambar();
+		});
+		
+		$('#stoprandomImage').on('click', function() {
+			clearTimeout(akhir);
+			clearInterval(awal);
+			
+			$('#randomImage').show();
+			$('#startTime').show();
+			$('#stoprandomImage').hide();
+			$('#nameTeam1').html(name_image);
+			document.getElementById("foto").src = src_image;
+		});
+		
+		$('#peserta-1').on('click', function() {			
+			$('#peserta-1').hide();
+		});
+		
+		$('#peserta').change(function() {
+			var tmpimages_terpilih = [];
+			$('#peserta :checked').each(function() {
+			  tmpimages_terpilih.push($(this).val());			  
+			});
+			images_terpilih =  tmpimages_terpilih;
+			console.log(images_terpilih);
+		});
+	</script>
+</body>
+</html>
